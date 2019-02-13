@@ -14,7 +14,9 @@ public class CardGenerator : MonoBehaviour
 
     private List<string[]> _subjectsList = new List<string[]>();
 
-    [SerializeField] private Text _subjectText;  // CSVの情報を表示するGameObject
+    [SerializeField] private GameObject _subjectNameObject;  // CSVの情報を表示するGameObject
+
+    private Text[] _subjectNameTexts;
 
     [SerializeField] private AudioSource audioSource;
 
@@ -35,9 +37,12 @@ public class CardGenerator : MonoBehaviour
             }
         }
 
+        // Textオブジェクトの取得
+        _subjectNameTexts = _subjectNameObject.GetComponentsInChildren<Text>();
+
         // indexを1にセット
         ShowCurrentIndex(1);
-        _subjectText.text = GetSubjectText(1);
+        ShowSubjectName(1);
         currentIndex = 1;
     }
 
@@ -48,24 +53,17 @@ public class CardGenerator : MonoBehaviour
         {
             var index = Random.Range(1, _subjectsList.Count);
             ShowCurrentIndex(index);
-            _subjectText.text = GetSubjectText(index);
+            ShowSubjectName(index);
             currentIndex = index;
         }
     }
 
-    private string GetSubjectText(int index)
+    private void ShowSubjectName(int index)
     {
-        string _str = "";
-        int _length;
-        foreach (var w in _subjectsList[index])
+        for (int i = 0; i < _subjectNameTexts.Length; i++)
         {
-            _length = (w.Length == Encoding.GetEncoding("shift_jis").GetByteCount(w)) ? (w.Length / 2) : w.Length;
-
-            if (_length > 9) _str += "<size=2>" + w + "</size>" + "\r\n";
-            else if (_length > 7) _str += "<size=3>" + w + "</size>" + "\r\n";
-            else _str += w + "\r\n";
+            _subjectNameTexts[i].text = _subjectsList[index][i];
         }
-        return _str;
     }
 
     private void ShowCurrentIndex(int index)
@@ -81,7 +79,7 @@ public class CardGenerator : MonoBehaviour
         var index = currentIndex + 1;
         if (index >= _subjectsList.Count - 1) index = 0;
         ShowCurrentIndex(index);
-        _subjectText.text = GetSubjectText(index);
+        ShowSubjectName(index);
         currentIndex = index;
     }
 
@@ -93,7 +91,7 @@ public class CardGenerator : MonoBehaviour
         var index = currentIndex - 1;
         if (index < 1) index = _subjectsList.Count - 1;
         ShowCurrentIndex(index);
-        _subjectText.text = GetSubjectText(index);
+        ShowSubjectName(index);
         currentIndex = index;
     }
 }
