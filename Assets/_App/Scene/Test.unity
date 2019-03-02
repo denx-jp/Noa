@@ -903,7 +903,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentNumText: {fileID: 404153307}
   csvFileName: cards_data.csv
-  _subjectText: {fileID: 0}
+  _subjectNameObject: {fileID: 656170488}
   audioSource: {fileID: 1314203132}
 --- !u!82 &1314203132
 AudioSource:
